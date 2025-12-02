@@ -1,0 +1,46 @@
+{
+  "summary": {
+    "totalResponden": 125,
+    "mengetahuiVMTS": 88,
+    "ikutSosialisasi": 72,
+    "perluPerbaikan": 35
+  },
+  "status": {
+    "Mahasiswa": 85,
+    "Dosen": 25,
+    "Tenaga Kependidikan": 10,
+    "Alumni": 5
+  },
+  "pemahaman": {
+    "Sangat Paham": 45,
+    "Paham": 55,
+    "Cukup Paham": 20,
+    "Kurang Paham": 5
+  },
+  "prodi": {
+    "Pendidikan Agama Islam": 50,
+    "Ekonomi Syariah": 40,
+    "Hukum Keluarga Islam": 25,
+    "Manajemen Pendidikan Islam": 10
+  },
+  "atmosfer": {
+    "Ya, mendukung": 95,
+    "Tidak mendukung": 15,
+    "Ragu-ragu": 15
+  },
+  "sumberInfoPT": {
+    "Website resmi": 65,
+    "Sosialisasi langsung": 45,
+    "Brosur/leaflet": 30,
+    "Media sosial": 40,
+    "Teman/kolega": 25,
+    "Papan pengumuman": 20
+  },
+  "sumberInfoProdi": {
+    "Website prodi": 55,
+    "Sosialisasi prodi": 50,
+    "Dosen pengampu": 60,
+    "Buku panduan": 35,
+    "Media sosial prodi": 30
+  }
+}
