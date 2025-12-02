@@ -1,21 +1,21 @@
 {
   "summary": {
     "totalResponden": 1,
-    "mengetahuiVMTS": 0,
-    "ikutSosialisasi": 0,
-    "perluPerbaikan": 0
+    "mengetahuiVMTS": 100,
+    "ikutSosialisasi": 100,
+    "perluPerbaikan": 100
   },
   "status": {
     "Pimpinan Perguruan Tinggi": 1
   },
   "pemahaman": {
-    "4": 1
+    "4 - Paham": 1
   },
   "prodi": {
     "Tidak Disebutkan": 1
   },
   "atmosfer": {
-    "4": 1
+    "4 - Mendukung": 1
   },
   "sumberInfoPT": {
     "Website/ media sosial": 1
