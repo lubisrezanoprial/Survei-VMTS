@@ -186,7 +186,7 @@
             <p class="text-gray-600 mb-6">Partisipasi Anda sangat penting untuk peningkatan mutu STAI UISU Pematangsiantar.</p>
             <div class="bg-indigo-50 border-l-4 border-indigo-500 p-6 rounded-lg">
                 <p class="text-lg font-semibold text-indigo-800 mb-3">Link Survei akan diisi di sini</p>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSc9H2bp80FGOSO3z64U0Pxdn84Bgh0tYtG_tCaD1_BjWQweqg/viewform" class="inline-block bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition shadow-lg">
+                <a href="#" class="inline-block bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition shadow-lg">
                     Mulai Isi Survei →
                 </a>
             </div>
@@ -377,20 +377,40 @@
             });
         }
 
-        // Render pemahaman chart
+        // Render pemahaman chart (dengan gradient untuk skala Likert)
         function renderPemahamanChart(data) {
             const ctx = document.getElementById('pemahamanChart');
             if (charts.pemahaman) charts.pemahaman.destroy();
             
+            // Urutkan data berdasarkan skala (1-5)
+            const sortedEntries = Object.entries(data).sort((a, b) => {
+                const aNum = parseInt(a[0]);
+                const bNum = parseInt(b[0]);
+                if (!isNaN(aNum) && !isNaN(bNum)) return aNum - bNum;
+                return 0;
+            });
+            
+            const labels = sortedEntries.map(e => e[0]);
+            const values = sortedEntries.map(e => e[1]);
+            
+            // Gradient warna dari merah ke hijau
+            const colors = [
+                'rgba(239, 68, 68, 0.8)',   // 1 - Merah
+                'rgba(251, 146, 60, 0.8)',  // 2 - Orange
+                'rgba(250, 204, 21, 0.8)',  // 3 - Kuning
+                'rgba(52, 211, 153, 0.8)',  // 4 - Hijau muda
+                'rgba(16, 185, 129, 0.8)'   // 5 - Hijau
+            ];
+            
             charts.pemahaman = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: Object.keys(data),
+                    labels: labels,
                     datasets: [{
                         label: 'Jumlah Responden',
-                        data: Object.values(data),
-                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
-                        borderColor: 'rgba(102, 126, 234, 1)',
+                        data: values,
+                        backgroundColor: colors.slice(0, labels.length),
+                        borderColor: colors.slice(0, labels.length).map(c => c.replace('0.8', '1')),
                         borderWidth: 2,
                         borderRadius: 8
                     }]
@@ -399,7 +419,14 @@
                     responsive: true,
                     maintainAspectRatio: true,
                     plugins: {
-                        legend: { display: false }
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + ' responden';
+                                }
+                            }
+                        }
                     },
                     scales: {
                         y: {
@@ -446,22 +473,38 @@
             });
         }
 
-        // Render atmosfer chart
+        // Render atmosfer chart (dengan gradient untuk skala Likert)
         function renderAtmosferChart(data) {
             const ctx = document.getElementById('atmosferChart');
             if (charts.atmosfer) charts.atmosfer.destroy();
             
+            // Urutkan data berdasarkan skala (1-5)
+            const sortedEntries = Object.entries(data).sort((a, b) => {
+                const aNum = parseInt(a[0]);
+                const bNum = parseInt(b[0]);
+                if (!isNaN(aNum) && !isNaN(bNum)) return aNum - bNum;
+                return 0;
+            });
+            
+            const labels = sortedEntries.map(e => e[0]);
+            const values = sortedEntries.map(e => e[1]);
+            
+            // Gradient warna dari merah ke hijau
+            const colors = [
+                '#ef4444',  // 1 - Merah
+                '#fb923c',  // 2 - Orange
+                '#facc15',  // 3 - Kuning
+                '#34d399',  // 4 - Hijau muda
+                '#10b981'   // 5 - Hijau
+            ];
+            
             charts.atmosfer = new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: Object.keys(data),
+                    labels: labels,
                     datasets: [{
-                        data: Object.values(data),
-                        backgroundColor: [
-                            '#10b981',
-                            '#ef4444',
-                            '#f59e0b'
-                        ],
+                        data: values,
+                        backgroundColor: colors.slice(0, labels.length),
                         borderWidth: 2,
                         borderColor: '#fff'
                     }]
@@ -475,6 +518,15 @@
                             labels: {
                                 padding: 15,
                                 font: { size: 12 }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = ((context.parsed / total) * 100).toFixed(1);
+                                    return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
+                                }
                             }
                         }
                     }
