@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survei VMTS - STAI UISU Pematangsiantar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="gradient-bg shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-white text-xl font-bold">SIMPEM - STAI UISU Pematangsiantar</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="#dashboard" class="text-white hover:text-gray-200 px-3 py-2 rounded-md text-sm font-medium transition">Dashboard</a>
+                    <a href="#isi-survei" class="text-white hover:text-gray-200 px-3 py-2 rounded-md text-sm font-medium transition">Isi Survei</a>
+                    <a href="#pedoman" class="text-white hover:text-gray-200 px-3 py-2 rounded-md text-sm font-medium transition">Pedoman</a>
+                    <a href="#pengumuman" class="text-white hover:text-gray-200 px-3 py-2 rounded-md text-sm font-medium transition">Pengumuman</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Year Selector -->
+    <div class="gradient-bg text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-4xl font-bold mb-4">Survei Pemahaman VMTS</h2>
+                <p class="text-xl mb-8">Visi, Misi, Tujuan, dan Strategi STAI "UISU" Pematangsiantar</p>
+                
+                <!-- Year Selector -->
+                <div class="flex justify-center items-center space-x-4">
+                    <label class="text-lg font-semibold">Pilih Periode Tahun:</label>
+                    <select id="yearSelector" class="px-6 py-3 rounded-lg text-gray-800 font-semibold text-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-white">
+                        <option value="">-- Pilih Tahun --</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Data Status Notice -->
+        <div id="dataNotice" class="hidden mb-8">
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg shadow-md">
+                <div class="flex items-center">
+                    <svg class="h-8 w-8 text-yellow-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    <div>
+                        <h3 class="text-lg font-bold text-yellow-800">Data Belum Tersedia Publik</h3>
+                        <p class="text-yellow-700">Data survei untuk tahun yang dipilih belum tersedia atau masih dalam proses pengumpulan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div id="dashboardContent" class="hidden">
+            
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm font-semibold mb-1">Total Responden</p>
+                            <p id="totalResponden" class="text-3xl font-bold text-indigo-600">0</p>
+                        </div>
+                        <div class="bg-indigo-100 rounded-full p-3">
+                            <svg class="h-8 w-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm font-semibold mb-1">Mengetahui VMTS</p>
+                            <p id="mengetahuiVMTS" class="text-3xl font-bold text-green-600">0%</p>
+                        </div>
+                        <div class="bg-green-100 rounded-full p-3">
+                            <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm font-semibold mb-1">Ikut Sosialisasi</p>
+                            <p id="ikutSosialisasi" class="text-3xl font-bold text-blue-600">0%</p>
+                        </div>
+                        <div class="bg-blue-100 rounded-full p-3">
+                            <svg class="h-8 w-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm font-semibold mb-1">Perlu Perbaikan</p>
+                            <p id="perluPerbaikan" class="text-3xl font-bold text-orange-600">0%</p>
+                        </div>
+                        <div class="bg-orange-100 rounded-full p-3">
+                            <svg class="h-8 w-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- Status Responden -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Status Responden</h3>
+                    <canvas id="statusChart"></canvas>
+                </div>
+
+                <!-- Tingkat Pemahaman -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Tingkat Pemahaman VMTS</h3>
+                    <canvas id="pemahamanChart"></canvas>
+                </div>
+
+                <!-- Program Studi -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Distribusi Program Studi</h3>
+                    <canvas id="prodiChart"></canvas>
+                </div>
+
+                <!-- Dukungan Atmosfer Akademik -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Dukungan terhadap Atmosfer Akademik</h3>
+                    <canvas id="atmosferChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Detailed Analysis -->
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">Analisis Detail</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-semibold text-gray-700 mb-3">Sumber Informasi VMTS PT</h4>
+                        <div id="sumberInfoPT" class="space-y-2"></div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold text-gray-700 mb-3">Sumber Informasi VMTS Prodi</h4>
+                        <div id="sumberInfoProdi" class="space-y-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Isi Survei Section -->
+        <div id="isi-survei" class="mt-12 bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Isi Survei VMTS</h2>
+            <p class="text-gray-600 mb-6">Partisipasi Anda sangat penting untuk peningkatan mutu STAI UISU Pematangsiantar.</p>
+            <div class="bg-indigo-50 border-l-4 border-indigo-500 p-6 rounded-lg">
+                <p class="text-lg font-semibold text-indigo-800 mb-3">Link Survei akan diisi di sini</p>
+                <a href="#" class="inline-block bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition shadow-lg">
+                    Mulai Isi Survei →
+                </a>
+            </div>
+        </div>
+
+        <!-- Pedoman Section -->
+        <div id="pedoman" class="mt-12 bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Pedoman Survei VMTS</h2>
+            <div class="prose max-w-none text-gray-600">
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Tujuan Survei</h3>
+                <p class="mb-4">Survei ini bertujuan untuk mengukur tingkat pemahaman civitas akademika terhadap Visi, Misi, Tujuan, dan Strategi (VMTS) STAI UISU Pematangsiantar.</p>
+                
+                <h3 class="text-xl font-bold text-gray-800 mb-3 mt-6">Responden</h3>
+                <ul class="list-disc pl-6 mb-4">
+                    <li>Mahasiswa aktif</li>
+                    <li>Dosen tetap dan tidak tetap</li>
+                    <li>Tenaga kependidikan</li>
+                    <li>Alumni</li>
+                </ul>
+
+                <h3 class="text-xl font-bold text-gray-800 mb-3 mt-6">Periode Pelaksanaan</h3>
+                <p class="mb-4">Survei dilaksanakan setiap tahun akademik untuk monitoring berkelanjutan.</p>
+
+                <h3 class="text-xl font-bold text-gray-800 mb-3 mt-6">Kerahasiaan Data</h3>
+                <p>Semua data responden dijaga kerahasiaannya dan hanya digunakan untuk kepentingan penjaminan mutu internal.</p>
+            </div>
+        </div>
+
+        <!-- Pengumuman Section -->
+        <div id="pengumuman" class="mt-12 bg-white rounded-xl shadow-lg p-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Pengumuman</h2>
+            <div class="space-y-4">
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg">
+                    <p class="text-sm text-blue-600 font-semibold mb-1">Tahun Akademik 2024/2025</p>
+                    <h3 class="text-lg font-bold text-blue-900 mb-2">Survei VMTS Dibuka</h3>
+                    <p class="text-blue-800">Kami mengundang seluruh civitas akademika untuk berpartisipasi dalam survei pemahaman VMTS periode tahun ini.</p>
+                </div>
+                
+                <div class="bg-gray-50 border-l-4 border-gray-400 p-6 rounded-lg">
+                    <p class="text-sm text-gray-600 font-semibold mb-1">Informasi</p>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Hasil Survei Dipublikasikan</h3>
+                    <p class="text-gray-800">Hasil survei akan dipublikasikan setelah periode pengumpulan data selesai.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white mt-16 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h3 class="text-xl font-bold mb-2">Lembaga Penjaminan Mutu (LPM)</h3>
+                <p class="text-gray-200 mb-4">STAI UISU Pematangsiantar</p>
+                <p class="text-sm text-gray-300">© 2024 LPM STAI UISU Pematangsiantar. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Data storage
+        let currentData = null;
+        let charts = {};
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAvailableYears();
+            setupEventListeners();
+        });
+
+        // Load available years
+        async function loadAvailableYears() {
+            try {
+                const response = await fetch('data/available-years.json');
+                const years = await response.json();
+                
+                const selector = document.getElementById('yearSelector');
+                years.forEach(year => {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    selector.appendChild(option);
+                });
+                
+                // Auto select latest year if available
+                if (years.length > 0) {
+                    selector.value = years[years.length - 1];
+                    loadYearData(years[years.length - 1]);
+                }
+            } catch (error) {
+                console.error('Error loading years:', error);
+                showNotice();
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            document.getElementById('yearSelector').addEventListener('change', function(e) {
+                const year = e.target.value;
+                if (year) {
+                    loadYearData(year);
+                } else {
+                    showNotice();
+                }
+            });
+        }
+
+        // Load data for selected year
+        async function loadYearData(year) {
+            try {
+                const response = await fetch(`data/${year}.json`);
+                if (!response.ok) throw new Error('Data not found');
+                
+                currentData = await response.json();
+                hideNotice();
+                renderDashboard(currentData);
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showNotice();
+            }
+        }
+
+        // Show/hide notice
+        function showNotice() {
+            document.getElementById('dataNotice').classList.remove('hidden');
+            document.getElementById('dashboardContent').classList.add('hidden');
+        }
+
+        function hideNotice() {
+            document.getElementById('dataNotice').classList.add('hidden');
+            document.getElementById('dashboardContent').classList.remove('hidden');
+        }
+
+        // Render dashboard with data
+        function renderDashboard(data) {
+            // Update summary cards
+            document.getElementById('totalResponden').textContent = data.summary.totalResponden;
+            document.getElementById('mengetahuiVMTS').textContent = data.summary.mengetahuiVMTS + '%';
+            document.getElementById('ikutSosialisasi').textContent = data.summary.ikutSosialisasi + '%';
+            document.getElementById('perluPerbaikan').textContent = data.summary.perluPerbaikan + '%';
+
+            // Render charts
+            renderStatusChart(data.status);
+            renderPemahamanChart(data.pemahaman);
+            renderProdiChart(data.prodi);
+            renderAtmosferChart(data.atmosfer);
+            
+            // Render detailed info
+            renderSumberInfo('sumberInfoPT', data.sumberInfoPT);
+            renderSumberInfo('sumberInfoProdi', data.sumberInfoProdi);
+        }
+
+        // Render status chart
+        function renderStatusChart(data) {
+            const ctx = document.getElementById('statusChart');
+            if (charts.status) charts.status.destroy();
+            
+            charts.status = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(data),
+                    datasets: [{
+                        data: Object.values(data),
+                        backgroundColor: [
+                            '#667eea',
+                            '#764ba2',
+                            '#f093fb',
+                            '#4facfe',
+                            '#43e97b'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                font: { size: 12 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render pemahaman chart
+        function renderPemahamanChart(data) {
+            const ctx = document.getElementById('pemahamanChart');
+            if (charts.pemahaman) charts.pemahaman.destroy();
+            
+            charts.pemahaman = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data),
+                    datasets: [{
+                        label: 'Jumlah Responden',
+                        data: Object.values(data),
+                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render prodi chart
+        function renderProdiChart(data) {
+            const ctx = document.getElementById('prodiChart');
+            if (charts.prodi) charts.prodi.destroy();
+            
+            charts.prodi = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(data),
+                    datasets: [{
+                        label: 'Jumlah Responden',
+                        data: Object.values(data),
+                        backgroundColor: 'rgba(118, 75, 162, 0.8)',
+                        borderColor: 'rgba(118, 75, 162, 1)',
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: { stepSize: 1 }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render atmosfer chart
+        function renderAtmosferChart(data) {
+            const ctx = document.getElementById('atmosferChart');
+            if (charts.atmosfer) charts.atmosfer.destroy();
+            
+            charts.atmosfer = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(data),
+                    datasets: [{
+                        data: Object.values(data),
+                        backgroundColor: [
+                            '#10b981',
+                            '#ef4444',
+                            '#f59e0b'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                font: { size: 12 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render sumber info
+        function renderSumberInfo(elementId, data) {
+            const container = document.getElementById(elementId);
+            container.innerHTML = '';
+            
+            Object.entries(data).forEach(([key, value]) => {
+                const bar = document.createElement('div');
+                bar.className = 'flex items-center space-x-3';
+                
+                const percentage = (value / Math.max(...Object.values(data))) * 100;
+                
+                bar.innerHTML = `
+                    <div class="flex-1">
+                        <div class="flex justify-between mb-1">
+                            <span class="text-sm text-gray-700">${key}</span>
+                            <span class="text-sm font-semibold text-gray-900">${value}</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-indigo-600 h-2 rounded-full transition-all duration-500" style="width: ${percentage}%"></div>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(bar);
+            });
+        }
+    </script>
+</body>
+</html>
