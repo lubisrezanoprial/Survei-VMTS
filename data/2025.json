@@ -1,26 +1,28 @@
 {
   "summary": {
-    "totalResponden": 1,
+    "totalResponden": 2,
     "mengetahuiVMTS": 100,
     "ikutSosialisasi": 100,
-    "perluPerbaikan": 0
+    "perluPerbaikan": 100
   },
   "status": {
-    "Pimpinan Perguruan Tinggi": 1
+    "Dosen": 2
   },
   "pemahaman": {
-    "4 - Paham": 1
+    "4 - Paham": 1,
+    "5 - Sangat Paham": 1
   },
   "prodi": {
-    "Tidak Disebutkan": 1
+    "Tidak Disebutkan": 2
   },
   "atmosfer": {
-    "4 - Mendukung": 1
+    "4 - Mendukung": 1,
+    "5 - Sangat Mendukung": 1
   },
   "sumberInfoPT": {
-    "Website/ media sosial": 1
+    "Website/ media sosial": 2
   },
   "sumberInfoProdi": {
-    "Website/ media sosial": 1
+    "Website/ media sosial": 2
   }
 }
